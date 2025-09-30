@@ -67,28 +67,45 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Header */}
-      <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">KI Agent Chat</h1>
-        <div className="flex items-center gap-2">
-          <div
-            className={`w-3 h-3 rounded-full ${
-              connected ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></div>
-          <span className="text-sm text-gray-600">
-            {connected ? "Connected" : "Disconnected"}
-          </span>
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-700/50 px-6 py-4 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-lg">KI</span>
+          </div>
+          <div>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Agent Chat
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Powered by AI</p>
+          </div>
+          <div className="flex items-center gap-2 bg-white dark:bg-gray-700 px-3 py-2 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm">
+            <div
+              className={`w-2 h-2 rounded-full transition-colors ${
+                connected ? "bg-emerald-500 animate-pulse" : "bg-red-500"
+              }`}
+            ></div>
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+              {connected ? "Connected" : "Disconnected"}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
         {messages.length === 0 && (
-          <div className="text-center text-gray-500 mt-12">
-            <p className="text-lg mb-2">Welcome to KI Agent Chat</p>
-            <p className="text-sm">Start a conversation with the AI agents</p>
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Welcome to KI</h2>
+            <p className="text-gray-500 dark:text-gray-400 max-w-md">
+              Start a conversation with our AI agents. They're ready to help you build your knowledge base and create amazing content.
+            </p>
           </div>
         )}
 
@@ -97,25 +114,28 @@ export default function Chat() {
             key={index}
             className={`flex ${
               message.role === "user" ? "justify-end" : "justify-start"
-            }`}
+            } animate-fade-in`}
           >
             <div
-              className={`max-w-[70%] rounded-lg px-4 py-3 ${
+              className={`max-w-[75%] rounded-2xl px-5 py-3 shadow-md transition-all hover:shadow-lg ${
                 message.role === "user"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-800 border border-gray-200"
+                  ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
+                  : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-gray-700"
               }`}
             >
-              <p className="whitespace-pre-wrap break-words">
+              <p className="whitespace-pre-wrap break-words leading-relaxed">
                 {message.content}
               </p>
               {message.timestamp && (
                 <p
-                  className={`text-xs mt-1 ${
-                    message.role === "user" ? "text-blue-100" : "text-gray-400"
+                  className={`text-xs mt-2 ${
+                    message.role === "user" ? "text-blue-100" : "text-gray-400 dark:text-gray-500"
                   }`}
                 >
-                  {message.timestamp.toLocaleTimeString()}
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
                 </p>
               )}
             </div>
@@ -123,16 +143,16 @@ export default function Chat() {
         ))}
 
         {loading && (
-          <div className="flex justify-start">
-            <div className="bg-white rounded-lg px-4 py-3 border border-gray-200">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+          <div className="flex justify-start animate-fade-in">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl px-5 py-4 border border-gray-100 dark:border-gray-700 shadow-md">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full animate-bounce"></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2.5 h-2.5 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full animate-bounce"
                   style={{ animationDelay: "0.1s" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2.5 h-2.5 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full animate-bounce"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
               </div>
@@ -144,22 +164,32 @@ export default function Chat() {
       </div>
 
       {/* Input */}
-      <div className="bg-white border-t px-6 py-4">
-        <form onSubmit={handleSubmit} className="flex gap-3">
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200/50 dark:border-gray-700/50 px-6 py-5 shadow-lg">
+        <form onSubmit={handleSubmit} className="flex gap-3 max-w-4xl mx-auto">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             disabled={loading || !connected}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="flex-1 px-5 py-3.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:cursor-not-allowed shadow-sm transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100"
           />
           <button
             type="submit"
             disabled={loading || !connected || !input.trim()}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg disabled:shadow-none"
           >
-            {loading ? "Sending..." : "Send"}
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Sending
+              </span>
+            ) : (
+              "Send"
+            )}
           </button>
         </form>
       </div>
